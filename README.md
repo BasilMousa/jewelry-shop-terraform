@@ -2,10 +2,13 @@
 
 
 ## File Hierarchy
-```
 jewelry-shop-terraform/
 │
 ├── README.md                # Project documentation and instructions
+│
+├── ansible/                 # Ansible configuration and playbooks
+│   ├── inventory.ini        # Inventory file (add EC2 IPs from Terraform outputs)
+│   └── playbook.yml         # Main playbook for provisioning and deployment
 │
 ├── terraform/               # All Terraform infrastructure code
 │   ├── main.tf              # Orchestrates modules and passes variables/outputs
@@ -35,7 +38,7 @@ jewelry-shop-terraform/
 │           ├── variables.tf
 │           └── outputs.tf
 │
-├── app.py                   # application code ( need to move it to this repo first)
+├── app.py                   # application code
 ├── functions.py             # Additional app logic
 ├── python/                  # App source code and modules
 │   ├── functions.py
@@ -86,7 +89,12 @@ terraform/
 6. **Outputs**
    - After apply, key info (EC2 IPs, ELB DNS) is shown for Ansible use.
 7. **Configure Servers with Ansible**
-   - Use Terraform outputs as inventory for Ansible playbooks.
+   - Add EC2 IPs from Terraform outputs to `ansible/inventory.ini`.
+   - Run the playbook:
+     ```bash
+     cd ansible
+     ansible-playbook -i inventory.ini playbook.yml
+     ```
 8. **Destroy Infrastructure**
    - `terraform destroy` to remove all resources.
 
@@ -98,18 +106,3 @@ terraform/
 ## Terraform State
 - State is stored remotely in an S3 bucket (`jewelry-shop-basil-terraform`) and locked with DynamoDB (`jewelry-shop-lock-table-basil`).
 - Both resources are provisioned by Terraform modules.
-
-## Ansible Integration
-- After Terraform deploys infrastructure, use the outputs (EC2 IPs, ELB DNS) as inventory for Ansible.
-- Ansible playbooks install Python, web server, and deploy your app code to EC2 instances.
-- The application is accessible only via the ELB public endpoint.
-
-## Destroy Process
-- Run `terraform destroy` in the `terraform` directory to cleanly remove all resources.
-- This includes VPC, subnets, EC2, ELB, security groups, S3 bucket, and DynamoDB table.
-
-## Notes
-- Do not hardcode AWS credentials in any Terraform or Ansible files.
-- All resource logic is modularized for clarity and reuse.
-- Unused resource files have been deleted after refactoring into modules.
-
