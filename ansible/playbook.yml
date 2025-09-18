@@ -1,0 +1,54 @@
+---
+- name: Configure app servers and Ansible host
+  hosts: app_servers
+  become: yes
+  tasks:
+    - name: Install Python 3 and pip
+      apt:
+        name:
+          - python3
+          - python3-pip
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Install Apache web server
+      apt:
+        name: apache2
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Copy application files
+      copy:
+        src: ../app.py
+        dest: /var/www/app/app.py
+      notify: Restart Apache
+
+    - name: Copy WSGI and Apache config
+      copy:
+        src: ../app.wsgi
+        dest: /var/www/app/app.wsgi
+      notify: Restart Apache
+      
+    - name: Copy Apache config
+      copy:
+        src: ../apache.conf
+        dest: /etc/apache2/sites-available/app.conf
+      notify: Restart Apache
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
+
+- name: Configure Ansible host
+  hosts: ansible_host
+  become: yes
+  tasks:
+    - name: Install Python 3 and pip
+      apt:
+        name:
+          - python3
+          - python3-pip
+        state: present
+      when: ansible_os_family == "Debian"
