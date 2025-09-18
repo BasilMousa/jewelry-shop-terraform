@@ -35,7 +35,7 @@ jewelry-shop-terraform/
 │           ├── variables.tf
 │           └── outputs.tf
 │
-├── app.py                   # Your application code
+├── app.py                   # application code ( need to move it to this repo first)
 ├── functions.py             # Additional app logic
 ├── python/                  # App source code and modules
 │   ├── functions.py
