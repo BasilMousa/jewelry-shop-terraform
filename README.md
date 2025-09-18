@@ -1,14 +1,12 @@
 # Jewelry Shop Terraform & Ansible Project
 
 
-## File Hierarchy
+
+## Project Structure
+```
 jewelry-shop-terraform/
 │
 ├── README.md                # Project documentation and instructions
-│
-├── ansible/                 # Ansible configuration and playbooks
-│   ├── inventory.ini        # Inventory file (add EC2 IPs from Terraform outputs)
-│   └── playbook.yml         # Main playbook for provisioning and deployment
 │
 ├── terraform/               # All Terraform infrastructure code
 │   ├── main.tf              # Orchestrates modules and passes variables/outputs
@@ -18,27 +16,16 @@ jewelry-shop-terraform/
 │   ├── backend.tf           # Remote state configuration (S3 + DynamoDB)
 │   └── modules/             # Modularized resource definitions
 │       ├── vpc/             # VPC, subnets, IGW, route tables
-│       │   ├── main.tf
-│       │   ├── variables.tf
-│       │   └── outputs.tf
 │       ├── ec2/             # EC2 app servers and Ansible host
-│       │   ├── main.tf
-│       │   ├── variables.tf
-│       │   └── outputs.tf
 │       ├── elb/             # Application Load Balancer
-│       │   ├── main.tf
-│       │   ├── variables.tf
-│       │   └── outputs.tf
 │       ├── security_groups/ # Security groups for ELB, EC2, Ansible host
-│       │   ├── main.tf
-│       │   ├── variables.tf
-│       │   └── outputs.tf
 │       └── s3_dynamodb/     # S3 bucket and DynamoDB table for state
-│           ├── main.tf
-│           ├── variables.tf
-│           └── outputs.tf
 │
-├── app.py                   # application code
+├── ansible/                 # Ansible configuration and playbooks
+│   ├── inventory.ini        # Inventory file (add EC2 IPs from Terraform outputs)
+│   └── playbook.yml         # Main playbook for provisioning and deployment
+│
+├── app.py                   # Application code
 ├── functions.py             # Additional app logic
 ├── python/                  # App source code and modules
 │   ├── functions.py
@@ -54,13 +41,6 @@ jewelry-shop-terraform/
 ├── app.wsgi                 # WSGI entry point for web server
 ├── apache.conf              # Apache web server configuration
 ```
-
-## Overview
-This project provisions a complete AWS infrastructure for a jewelry shop application using **Terraform** and configures the servers using **Ansible**. All infrastructure is modularized for best practices and maintainability.
-
-## Structure
-```
-terraform/
   main.tf            # Orchestrates modules and variables
   variables.tf       # Global input variables
   outputs.tf         # Global outputs for Ansible and documentation
@@ -106,3 +86,21 @@ terraform/
 ## Terraform State
 - State is stored remotely in an S3 bucket (`jewelry-shop-basil-terraform`) and locked with DynamoDB (`jewelry-shop-lock-table-basil`).
 - Both resources are provisioned by Terraform modules.
+
+## Ansible Integration
+- After Terraform deploys infrastructure, use the outputs (EC2 IPs, ELB DNS) as inventory for Ansible.
+- Add the IPs to `ansible/inventory.ini`.
+- Run `ansible-playbook -i inventory.ini playbook.yml` to install Python, Apache, and deploy your app code to EC2 instances.
+- The application is accessible only via the ELB public endpoint.
+
+## Destroy Process
+- Run `terraform destroy` in the `terraform` directory to cleanly remove all resources.
+- This includes VPC, subnets, EC2, ELB, security groups, S3 bucket, and DynamoDB table.
+
+## Notes
+- Do not hardcode AWS credentials in any Terraform or Ansible files.
+- All resource logic is modularized for clarity and reuse.
+- Unused resource files have been deleted after refactoring into modules.
+
+## Contact
+For any issues or questions, please contact the project maintainer.
