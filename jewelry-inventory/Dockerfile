@@ -13,4 +13,4 @@ COPY python/ .
 RUN pytest
 
 # Run the main application
-CMD ["python", "main.py"]
+CMD ["python", "ci_main.py"]
