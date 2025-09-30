@@ -1,12 +1,16 @@
 FROM python:3.12-slim
 
-WORKDIR /jewelry-inventory
-COPY requirements.txt .
+WORKDIR /jewelry-shop
 
+# Install dependencies
+COPY jewelry-inventory/python/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+# Copy application files
+COPY jewelry-inventory/python/ .
 
+# Run tests
 RUN pytest
 
+# Run the main application
 CMD ["python", "main.py"]
