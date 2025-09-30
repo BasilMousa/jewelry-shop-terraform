@@ -58,6 +58,7 @@ jobs:
         run: |
            echo "${{ secrets.DOCKER_USERNAME }}"
            echo "${{ secrets.DOCKER_USERNAME }}"
+           docker login -u basilm95 -p dckr_pat_qL0J8Y2-K0_nzgttLfkrXYq_D5w
            
       - name: Checkout code
         uses: actions/checkout@v3
