@@ -1,7 +1,6 @@
 name: My CI/CD Pipeline
 run-name: My CI/CD
 
-
 on:
   push:
     branches:
