@@ -1,5 +1,5 @@
 import pytest
-from jewelry_functions import add_jewelry_item, mark_item_sold
+from functions import add_jewelry_item, mark_item_sold
 
 def test_add_jewelry_item():
     inventory = []
