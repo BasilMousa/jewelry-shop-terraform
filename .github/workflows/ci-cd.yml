@@ -73,7 +73,7 @@ jobs:
 
       - name: Build and tag Docker image
         run: |
-          docker build -t jewelry:v3 ./app
+          docker build -t jewelry:v3 ./jewelry-inventory
           docker tag jewelry:v3 basilM95/jewelry:v3
 
       - name: Push Docker image
