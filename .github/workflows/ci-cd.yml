@@ -91,7 +91,7 @@ jobs:
       - name: Docker Run
         run: |
           docker run --rm basilm95/jewelry:v3 > jewelry.output.txt
-          cat get_users.output.txt
+          cat jewelry.output.txt
 
       - name: Upload jewelry.output as artifact
         uses: actions/upload-artifact@v4
