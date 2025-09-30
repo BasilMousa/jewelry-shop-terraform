@@ -1,6 +1,7 @@
 # Jewelry Shop Terraform & Ansible Project
 
 
+
 ## Project Structure
 ```
 jewelry-shop-terraform/
