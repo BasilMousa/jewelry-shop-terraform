@@ -1,6 +1,6 @@
 FROM python:3.12-slim
 
-WORKDIR /jewelry-shop
+WORKDIR /jewelry-inventory
 
 # Install dependencies
 COPY jewelry-inventory/python/requirements.txt .
