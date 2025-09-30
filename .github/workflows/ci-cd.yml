@@ -53,12 +53,7 @@ jobs:
     needs: build-test
 
     steps:
-
-      - name: Lcker Hub
-        run: |
-           echo "${{ secrets.DOCKER_USERNAME }}"
-           echo "${{ secrets.DOCKER_USERNAME }}"
-           
+  
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -74,10 +69,10 @@ jobs:
       - name: Build and tag Docker image
         run: |
           docker build -t jewelry:v3 ./jewelry-inventory
-          docker tag jewelry:v3 basilM95/jewelry:v3
+          docker tag jewelry:v3 basilm95/jewelry:v3
 
       - name: Push Docker image
-        run: docker push basilM95/jewelry:v3
+        run: docker push basilm95/jewelry:v3
 
 
 
@@ -91,11 +86,11 @@ jobs:
     steps:
       - name: Pull Docker image
         run: |
-          docker pull basilM95/jewelry:v3
+          docker pull basilm95/jewelry:v3
 
       - name: Docker Run
         run: |
-          docker run --rm basilM95/jewelry:v3 > jewelry.output.txt
+          docker run --rm basilm95/jewelry:v3 > jewelry.output.txt
           cat get_users.output.txt
 
       - name: Upload jewelry.output as artifact
